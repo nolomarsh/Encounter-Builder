@@ -8,37 +8,41 @@
         <script src="app.js" charset="utf-8"></script>
     </head>
     <body>
-        <div id="filterBar">>
-            <div class="dropdown">
-                <p id='crBtn'>CR</p>
-                <form class="dropFilter" id='crOptions'>
-                    <label for="cr0">0</label>
-                    <input type="checkbox" id="cr0" value="0">
-                    <label for="cr1/8">1/8</label>
-                    <input type="checkbox" id="cr1/8" value="1/8">
-                    <label for="cr1/4">1/4</label>
-                    <input type="checkbox" id="cr1/4" value="1/4">
-                    <label for="cr1/2">1/2</label>
-                    <input type="checkbox" id="cr1/2" value="1/2">
-                    <label for="cr1">1</label>
-                    <input type="checkbox" id="cr1" value="1">
-                    <label for="cr2">2</label>
-                    <input type="checkbox" id="cr2" value="2">
-                    <label for="cr3">3</label>
-                    <input type="checkbox" id="cr3" value="3">
-                    <label for="cr4">4</label>
-                    <input type="checkbox" id="cr4" value="4">
-                    <label for="cr5">5</label>
-                    <input type="checkbox" id="cr5" value="5">
-                </form>
+        <div class="metaContainer">
+            <h1>Encounter Builder</h1>
+            <div class="innerContainer">
+                <div class="encounterBox">
+                    text
+                </div>
+                <div class="searchContainer">
+                    <div id="filterBar">
+                        <form class="" id="chooseCR">
+                            <p>CR:</p>
+                            <select class="filterDrop" name="cr" id='crDrop' onchange="this.form.submit()">
+                                <option value="0">0</option>
+                                <option value="1/8">1/8</option>
+                                <option value="1/4">1/4</option>
+                                <option value="1/2">1/2</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </form>
+                        <div class="dropdown">
+                            <p id="typeBtn">Type</p>
+                            <form class="dropFilter" id="typeOptions">
+
+                            </form>
+                        </div>
+                    </div>
+                    <div id="searchResults">
+
+                    </div>
+                </div>
             </div>
-            <div class="dropdown">
-                <p id="typeBtn">Type</p>
-                <form class="dropFilter" id="typeOptions">
-                    
-                </form>
-            </div>
+
+            <button type="button" id='test'>test</button>
         </div>
-        <button type="button" name="button">test</button>
     </body>
 </html>
