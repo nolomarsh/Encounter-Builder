@@ -14,7 +14,7 @@ $( () => {
         }
 
     }
-  
+
 
     //object containing variables and methods related to the encounter box
     const encounter = {
@@ -71,7 +71,7 @@ $( () => {
             //if it isn't, create an object with its name and exp value(based on CR), with initial count 1, and add it to the monsters array
             const monObject = {
                 name: inMonster.name,
-                exp: crToExp(inMonster.challenge_rating),
+                exp: encounter.crToExp(inMonster.challenge_rating),
                 count: 1
             }
             encounter.monsters.push(monObject)
@@ -129,7 +129,7 @@ $( () => {
         $name = $('<td>').text(monster.name).appendTo($tr)
         $infoIcon = $('<i>').addClass("fas fa-info-circle")
         $name.prepend($infoIcon)
-        $cr = $('<td>').text(monster.challenge_rating + ` (${crToExp(monster.challenge_rating)})`).appendTo($tr)
+        $cr = $('<td>').text(monster.challenge_rating + ` (${encounter.crToExp(monster.challenge_rating)})`).appendTo($tr)
         $type = $('<td>').text(monster.type).appendTo($tr)
         $alignment = $('<td>').text(monster.alignment).appendTo($tr)
         $addCell = $('<td>').appendTo($tr)
@@ -139,10 +139,6 @@ $( () => {
             encounter.refreshTable()
         })
     }
-
-    //converts challenge rating to encounter exp
-    const
-
 
     $('#crDrop').change( (e) => {
         e.preventDefault()

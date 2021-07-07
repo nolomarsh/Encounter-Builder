@@ -26,14 +26,8 @@ h1 {
     align-items: flex-start;
     width: 100%;
 }
-#filterBar {
-    display: flex;
-    flex-wrap: wrap;
-    background: lavender;
-    padding: .5em;
-    border-radius: 5px;
-}
 
+/*Encounter table formatting*/
 .encounterTable {
     width: 28%;
     margin: 0 1%;
@@ -61,6 +55,16 @@ tbody {
 
 .encounterTable tr :last-child {
     width: 25%;
+}
+
+
+/* search formatting */
+#filterBar {
+    display: flex;
+    flex-wrap: wrap;
+    background: lavender;
+    padding: .5em;
+    border-radius: 5px;
 }
 
 .searchContainer {
@@ -106,4 +110,15 @@ tbody {
 
 tr * {
     padding: 5px;
+}
+
+/*Info card formatting*/
+#infoCard {
+    position: fixed;
+    width: 40%;
+    height: 500px;
+    margin: 10vh auto;
+    background: gold;
+    display: flex;
+    flex-direction: column;
 }
