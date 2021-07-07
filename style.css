@@ -117,8 +117,51 @@ tr * {
     position: fixed;
     width: 40%;
     height: 500px;
-    margin: 10vh auto;
+    /* margin: 10vh auto; */
+    right: 0;
     background: gold;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    border: 1px solid goldenrod;
+    border-radius: 5px;
+}
+
+#infoCard table {
+    border-top: 2px solid black;
+}
+
+#cardBasics {
+    width: 95%;
+}
+
+#cardBasics * {
+    padding: 5px 0;
+}
+
+#cardBasics th {
+    width: 10%;
+}
+
+#cardBasics td {
+    width: 40%
+}
+
+#cardAbilityScores {
+    width: 95%;
+    text-align: center;
+    border-bottom: 2px solid black;
+}
+
+#infoCard div {
+    width: 95%;
+}
+
+#infoCard span {
+    margin: 0;
+    padding: 0;
+}
+
+#infoCard div h4 {
+    border-bottom: 1px solid black;
 }
