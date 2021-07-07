@@ -15,49 +15,52 @@ $( () => {
 
     }
 
-    const crToExpTable = {
-        '0': 10,
-        '1/8': 25,
-        '1/4': 50,
-        '1/2': 100,
-        '1': 200,
-        '2': 450,
-        '3': 700,
-        '4': 1100,
-        '5': 1800,
-        '6': 2300,
-        '7': 2900,
-        '8': 3900,
-        '9': 5000,
-        '10': 5900,
-        '11': 7200,
-        '12': 8400,
-        '13': 10000,
-        '14': 11500,
-        '15': 13000,
-        '16': 15000,
-        '17': 18000,
-        '18': 20000,
-        '19': 22000,
-        '20': 25000,
-        '21': 33000,
-        '22': 41000,
-        '23': 50000,
-        '24': 62000,
-        '25': 75000,
-        '26': 90000,
-        '27': 105000,
-        '28': 120000,
-        '29': 135000,
-        '30': 155000
-    }
 
+    //object containing variables and methods related to the encounter box
     const encounter = {
         $table: $('.encounterTable'),
         count: 0,
         monsters: [],
         exp: 0,
+        crToExpTable: {
+            '0': 10,
+            '1/8': 25,
+            '1/4': 50,
+            '1/2': 100,
+            '1': 200,
+            '2': 450,
+            '3': 700,
+            '4': 1100,
+            '5': 1800,
+            '6': 2300,
+            '7': 2900,
+            '8': 3900,
+            '9': 5000,
+            '10': 5900,
+            '11': 7200,
+            '12': 8400,
+            '13': 10000,
+            '14': 11500,
+            '15': 13000,
+            '16': 15000,
+            '17': 18000,
+            '18': 20000,
+            '19': 22000,
+            '20': 25000,
+            '21': 33000,
+            '22': 41000,
+            '23': 50000,
+            '24': 62000,
+            '25': 75000,
+            '26': 90000,
+            '27': 105000,
+            '28': 120000,
+            '29': 135000,
+            '30': 155000
+        },
         add: inMonster => {
+            //Whether or not the monster is already in the monsters array, increment total count
+            //if the monster is already in the monsters array, increment its count
             for (let object of encounter.monsters) {
                 if (object.name === inMonster.name){
                     object.count++
@@ -65,6 +68,7 @@ $( () => {
                     return
                 }
             }
+            //if it isn't, create an object with its name and exp value(based on CR), with initial count 1, and add it to the monsters array
             const monObject = {
                 name: inMonster.name,
                 exp: crToExp(inMonster.challenge_rating),
@@ -73,18 +77,15 @@ $( () => {
             encounter.monsters.push(monObject)
             encounter.count++
         },
-        refreshTable: () => {
-            $('.encounterRow').remove()
-            encounter.adjustExp()
-            for (let object of encounter.monsters) {
-                $row = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
-                $nameCell = $('<td>').text(`${object.count} x ${object.name}`).appendTo($row)
-                $exp = $('<td>').text(object.exp).appendTo($row)
+        //turn a monster's cr into the corresponding exp value
+        crToExp: cr => {
+            for (let key in encounter.crToExpTable) {
+                if (`${cr}` === key) {
+                    return encounter.crToExpTable[key]
+                }
             }
-            $expRow = $('<tr>').addClass('encounterRow resultsRow').appendTo(encounter.$table)
-            $text = $('<th>').text('Adjusted Exp:').appendTo($expRow)
-            $adjExp = $('<th>').text(`${encounter.exp}`).appendTo($expRow)
         },
+        //based on the number of monsters and the 5e encounter building rules, calculate the adjusted exp of the encounter
         adjustExp: () => {
             let sum = 0;
             for (let monster of encounter.monsters) {
@@ -103,7 +104,24 @@ $( () => {
             } else if (encounter.count >= 15) {
                 encounter.exp = sum * 4
             }
-        }
+        },
+        //update the encounter table to reflect changes to the monsters array
+        refreshTable: () => {
+            //clear all rows but the header row
+            $('.encounterRow').remove()
+            //update the encounter adjusted EXP
+            encounter.adjustExp()
+            //create a row for each unique type of monster in the encounter, including how many of each kind and their individual experience value
+            for (let object of encounter.monsters) {
+                $row = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
+                $nameCell = $('<td>').text(`${object.count} x ${object.name}`).appendTo($row)
+                $exp = $('<td>').text(object.exp).appendTo($row)
+            }
+            //create a final row displaying adjusted encounter exp
+            $expRow = $('<tr>').addClass('encounterRow resultsRow').appendTo(encounter.$table)
+            $text = $('<th>').text('Adjusted Exp:').appendTo($expRow)
+            $adjExp = $('<th>').text(`${encounter.exp}`).appendTo($expRow)
+        },
     }
 
     const addSearchResult = (monster) => {
@@ -123,13 +141,7 @@ $( () => {
     }
 
     //converts challenge rating to encounter exp
-    const crToExp = cr => {
-        for (let key in crToExpTable) {
-            if (`${cr}` === key) {
-                return crToExpTable[key]
-            }
-        }
-    }
+    const
 
 
     $('#crDrop').change( (e) => {
