@@ -47,14 +47,37 @@ h1 {
     margin: 0 1%;
 }
 
-.searchResult {
+#searchResults {
+    width: 100%;
+    border-spacing: 0;
+    margin-top: 10px;
+}
+
+#searchResults tr {
     width: 100%;
     height: 45px;
     padding: 5px;
     background: linen;
     margin-top: 10px;
     border-radius: 5px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: space-between;
+    vertical-align: middle;
+}
+
+th {
+    text-align: left;
+    border-bottom: 1px solid goldenrod;
+
+}
+
+tr :first-child {
+    width: 30%;
+}
+
+tr :last-child {
+    text-align: right;
+    width: 20%;
+}
+
+tr * {
+    padding: 5px;
 }

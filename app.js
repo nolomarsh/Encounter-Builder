@@ -5,10 +5,12 @@ $( () => {
     }
 
     const addSearchResult = (monster) => {
-        $div = $('<div>').addClass('searchResult').appendTo($('#searchResults'))
-        $name = $('<p>').text(monster.name).appendTo($div)
-        $cr = $('<p>').text(monster.challenge_rating).appendTo($div)
-        $add = $('<div>').text('Add to Encounter').addClass('addBtn').appendTo($div)
+        $tr = $('<tr>').addClass('searchResult').appendTo($('#searchResults'))
+        $name = $('<td>').text(monster.name).appendTo($tr)
+        $cr = $('<td>').text(monster.challenge_rating).appendTo($tr)
+        $type = $('<td>').text(monster.type).appendTo($tr)
+        $alignment = $('<td>').text(monster.alignment).appendTo($tr)
+        $add = $('<td>').text('Add to Encounter').addClass('addBtn').appendTo($tr)
     }
 
     $('#chooseCR').submit( (e) => {
