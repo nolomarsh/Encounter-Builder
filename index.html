@@ -6,40 +6,37 @@
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="app.js" charset="utf-8"></script>
+        <script src="https://kit.fontawesome.com/5630320f4a.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <div class="metaContainer">
             <h1>Encounter Builder</h1>
             <div class="innerContainer">
-                <div class="encounterBox">
-                    text
-                </div>
+                <table class="encounterTable">
+                    <tr id="encounterHeader">
+                        <th>Name</th>
+                        <th>Exp(each)</th>
+                    </tr>
+                </table>
                 <div class="searchContainer">
                     <div id="filterBar">
                         <form class="" id="chooseCR">
                             <p>CR:</p>
-                            <select class="filterDrop" name="cr" id='crDrop' onchange="this.form.submit()">
-                                <option value="0">0</option>
-                                <option value="1/8">1/8</option>
-                                <option value="1/4">1/4</option>
-                                <option value="1/2">1/2</option>
-                                <option value="1">1</option>
-                                <option value="2">2</option>
-                                <option value="3">3</option>
-                                <option value="4">4</option>
+                            <select class="filterDrop" name="cr" id='crDrop'>
+
                             </select>
                         </form>
-                        <div class="dropdown">
-                            <p id="typeBtn">Type</p>
-                            <form class="dropFilter" id="typeOptions">
+                        <form class="" id='chooseType'>
+                            <p>Type:</p>
+                            <select class="filterDrop" name="type" id='typeDrop'>
 
-                            </form>
-                        </div>
+                            </select>
+                        </form>
                     </div>
                     <table id="searchResults">
-                        <tr>
+                        <tr id='searchHeader'>
                             <th>Name</th>
-                            <th>CR</th>
+                            <th>CR(exp)</th>
                             <th>Type</th>
                             <th>Alignment</th>
                             <th>Add</th>
@@ -48,7 +45,7 @@
                 </div>
             </div>
 
-            <button type="button" id='test'>test</button>
+            <!-- <button type="button" id='test'>test</button> -->
         </div>
     </body>
 </html>
