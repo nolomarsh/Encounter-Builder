@@ -14,7 +14,7 @@ $( () => {
         }
 
     }
-
+  
 
     //object containing variables and methods related to the encounter box
     const encounter = {
