@@ -88,6 +88,13 @@ tbody {
     border-top: 1px solid goldenrod;
 }
 
+#searchHeader {
+    position: sticky;
+    top: 0;
+    background: #F3DFC1;
+    z-index: 2;
+}
+
 #searchHeader,
 .searchResult {
     width: 100%;
@@ -143,6 +150,12 @@ tr * {
     padding: 5px;
     transform: scale(.25);
     transition: .1s;
+    z-index: 100;
+}
+
+#infoCard::-webkit-scrollbar {
+    /* background-color: gold; */
+    width: 0;
 }
 
 #infoCard table {
@@ -188,4 +201,29 @@ tr * {
 #cardTraits {
     border-bottom: 1px solid black;
     padding: 2px 0;
+}
+
+@media (max-width: 750px) {
+    .innerContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .encounterTable {
+        width: 60%;
+        margin: 10px auto;
+        position: inherit;
+    }
+
+    .searchContainer {
+        width: 95%;
+    }
+
+    #infoCard {
+        width: 80vw;
+        max-height: 80vh;
+        margin: 10vh 10vw;
+
+    }
+
 }

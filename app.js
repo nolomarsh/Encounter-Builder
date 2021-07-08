@@ -65,7 +65,6 @@ $( () => {
                 for (let monster of data.results) {
                     search.printResult(monster)
                 }
-                console.log(data);
                 search.totalResults = data.count
             },
             () => {
