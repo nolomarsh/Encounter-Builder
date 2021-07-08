@@ -38,6 +38,7 @@ h1 {
     top: 10px;
     align-self: flex-start;
     border-radius: 5px;
+    table-layout: fixed;
 }
 
 tbody {
@@ -167,7 +168,7 @@ tr * {
     margin-top: 10px;
 }
 
- span {
+span {
     margin: 0;
     padding: 0;
 }
@@ -224,6 +225,14 @@ tr * {
         max-height: 80vh;
         margin: 10vh 10vw;
 
+    }
+
+    .encounterTable tr > :first-child {
+        width: 75%;
+    }
+
+    .encounterTable tr > :last-child {
+        width: 25%;
     }
 
 }
