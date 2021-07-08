@@ -6,7 +6,7 @@
 }
 
 body {
-    background: #FDFDF0
+    background: linen
 }
 
 .metaContainer{
@@ -32,37 +32,40 @@ h1 {
     width: 28%;
     margin: 0 1%;
     min-height: 200px;
-    background: azure;
+    background: #C1E6EB;
     display: inline-flex;
     position: sticky;
     top: 10px;
     align-self: flex-start;
+    border-radius: 5px;
 }
 
 tbody {
     width: 100%;
 }
 
-#encounterHeader,
-.encounterRow {
+.encounterTable tr {
     width: 100%;
     text-align: left;
 }
 
-.encounterTable tr :first-child {
+.encounterTable tr > :first-child {
     width: 65%;
 }
 
-.encounterTable tr :last-child {
+.encounterTable tr > :last-child {
     width: 35%;
 }
 
+#partyInput select {
+    margin: 0 auto;
+}
 
 /* search formatting */
 #filterBar {
     display: flex;
     flex-wrap: wrap;
-    background: lavender;
+    background: #DDBEA8;
     padding: .5em;
     border-radius: 5px;
 }
@@ -77,10 +80,12 @@ tbody {
     width: 100%;
     margin-top: 10px;
     border-spacing: 0;
+    border-radius: 5px;
+    background: #F3DFC1;
 }
 
 #searchResults td {
-    border-top: 5px solid #FDFDF0;
+    border-top: 1px solid goldenrod;
 }
 
 #searchHeader,
@@ -88,7 +93,7 @@ tbody {
     width: 100%;
     height: 45px;
     padding: 5px;
-    background: linen;
+
     margin-top: 10px;
     border-radius: 5px;
     vertical-align: middle;
@@ -96,7 +101,7 @@ tbody {
 
 #searchHeader * {
     text-align: left;
-    border-bottom: 1px solid goldenrod;
+    border-bottom: 3px solid goldenrod;
 }
 
 .searchResult :first-child {
@@ -110,6 +115,14 @@ tbody {
 
 tr * {
     padding: 5px;
+}
+
+.fas {
+    transition: .2s;
+}
+
+.fas:hover {
+    color:
 }
 
 /*Info card formatting*/

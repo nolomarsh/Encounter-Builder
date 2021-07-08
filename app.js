@@ -52,7 +52,7 @@ $( () => {
     //object containing variables and methods related to the encounter box
     const encounter = {
         $table: $('.encounterTable'),
-        partySize: 4,
+        partySize: 1,
         partyLevel: 1,
         count: 0,
         monsters: [],
@@ -203,7 +203,10 @@ $( () => {
         },
         populateSelects: () => {
             for (let i = 1; i <= 8; i++) {
-                $('<option>').attr('value',i).text(i).appendTo($('#partySizeDrop'))
+                const $option = $('<option>').attr('value',i).text(i).appendTo($('#partySizeDrop'))
+                if (i === 4) {
+                    $option.attr('selected',true)
+                }
             }
             for (let i = 1; i <= 20; i++) {
                 $('<option>').attr('value',i).text(i).appendTo($('#partyLevelDrop'))

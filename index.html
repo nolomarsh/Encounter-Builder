@@ -2,11 +2,12 @@
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
-        <title>Project 1</title>
+        <title>5e Encounter Builder</title>
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
         <script src="app.js" charset="utf-8"></script>
         <script src="https://kit.fontawesome.com/5630320f4a.js" crossorigin="anonymous"></script>
+        <link rel="icon" href="https://cdn.pixabay.com/photo/2017/08/31/04/01/d20-2699387_960_720.png">
     </head>
     <body>
         <div class="metaContainer">
@@ -24,18 +25,15 @@
                     </tr>
                     <tr id='partyInput'>
                         <td>
-                            <select id="partySizeDrop" name="size">
+                            <select class='partyDrops' id="partySizeDrop" name="size">
                             </select>
                         </td>
                         <td>
-                            <select id="partyLevelDrop" name="level">
+                            <select class='partyDrops' id="partyLevelDrop" name="level">
                             </select>
                         </td>
-                    <tr>
-                        <th colspan="2">Encounter</th>
-                    </tr>
                     <tr id="encounterHeader">
-                        <th>Name</th>
+                        <th>Monster</th>
                         <th>Exp(each)</th>
                     </tr>
                 </table>
