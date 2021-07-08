@@ -122,7 +122,8 @@ tr * {
 }
 
 .fas:hover {
-    color:
+    color: rebeccapurple;
+    transform: scale(1.2)
 }
 
 /*Info card formatting*/

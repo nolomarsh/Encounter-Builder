@@ -6,6 +6,8 @@ $( () => {
         typeChoice: '',
         alignmentChoice: '',
         officialOnly: false,
+        pageNum: 1,
+        totalResults: 0,
         crOptions: ['0','1/8','1/4','1/2','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'],
         typeOptions: ['aberration','beast','celestial','construct','dragon','elemental','fey','fiend','giant','humanoid','monstrosity','ooze','plant','undead'],
         alignmentOptions: ['lawful good','neutral good','chaotic good','lawful neutral','neutral','chaotic neutral','lawful evil','neutral evil','chaotic evil','unaligned'],
@@ -20,8 +22,30 @@ $( () => {
                 $option = $('<option>').attr('value',`${option}`).text(`${option}`).appendTo($('#alignmentDrop'))
             }
         },
+        //appends a tr containing all of the info for the entry to the search results table
+        printResult: (monster) => {
+            $tr = $('<tr>').addClass('searchResult').appendTo($('#searchResults'))
+            $name = $('<td>').text(monster.name).appendTo($tr)
+            $infoIcon = $('<i>').addClass("fas fa-info-circle")
+            $name.prepend($infoIcon)
+            $cr = $('<td>').text(monster.challenge_rating + ` (${encounter.crToExp(monster.challenge_rating)})`).appendTo($tr)
+            $type = $('<td>').text(monster.type).appendTo($tr)
+            $alignment = $('<td>').text(monster.alignment).appendTo($tr)
+            $addCell = $('<td>').appendTo($tr)
+            $add = $('<i>').addClass("fas fa-plus").appendTo($addCell)
+            $infoIcon.click( () => {
+                populateCard(monster)
+            })
+            $add.click( (e) => {
+                encounter.add(monster)
+                encounter.refreshTable()
+            })
+        },
         run: () => {
-            $('.searchResult').remove()
+            if (search.pageNum === 1) {
+                $('.searchResult').remove()
+            }
+            //makes the officialOnly boolean determine whether 3rd party content is displayed
             let sourceFilter = ''
             if (search.officialOnly){
                 sourceFilter = 'wotc-srd'
@@ -30,7 +54,7 @@ $( () => {
                 url:'https://api.open5e.com/monsters/',
                 data: {
                     limit : 50,
-                    page: 1,
+                    page: search.pageNum,
                     document__slug: 'wotc-srd',
                     challenge_rating: search.crChoice,
                     type: search.typeChoice,
@@ -39,8 +63,10 @@ $( () => {
                 }
             }).then( (data) => {
                 for (let monster of data.results) {
-                    addSearchResult(monster)
-                };
+                    search.printResult(monster)
+                }
+                console.log(data);
+                search.totalResults = data.count
             },
             () => {
                 console.log('bad request');
@@ -238,25 +264,6 @@ $( () => {
         return splitString.join(' ')
     }
 
-    const addSearchResult = (monster) => {
-        $tr = $('<tr>').addClass('searchResult').appendTo($('#searchResults'))
-        $name = $('<td>').text(monster.name).appendTo($tr)
-        $infoIcon = $('<i>').addClass("fas fa-info-circle")
-        $name.prepend($infoIcon)
-        $cr = $('<td>').text(monster.challenge_rating + ` (${encounter.crToExp(monster.challenge_rating)})`).appendTo($tr)
-        $type = $('<td>').text(monster.type).appendTo($tr)
-        $alignment = $('<td>').text(monster.alignment).appendTo($tr)
-        $addCell = $('<td>').appendTo($tr)
-        $add = $('<i>').addClass("fas fa-plus").appendTo($addCell)
-        $infoIcon.click( () => {
-            populateCard(monster)
-        })
-        $add.click( (e) => {
-            encounter.add(monster)
-            encounter.refreshTable()
-        })
-    }
-
     const populateCard = (monster) => {
         $('#infoCard').show().css('transform','scale(1)')
         $('#cardName').text(monster.name)
@@ -372,6 +379,7 @@ $( () => {
     $('#crDrop').change( (e) => {
         e.preventDefault()
         search.crChoice = $('#crDrop').val()
+        search.pageNum = 1
         search.run()
         // return false
     })
@@ -379,12 +387,14 @@ $( () => {
     $('#typeDrop').change( (e) => {
         e.preventDefault()
         search.typeChoice = $('#typeDrop').val()
+        search.pageNum = 1
         search.run()
     })
 
     $('#alignmentDrop').change( (e) => {
         e.preventDefault()
         search.alignmentChoice = $('#alignmentDrop').val()
+        search.pageNum = 1
         search.run()
     })
 
@@ -394,6 +404,7 @@ $( () => {
         } else {
             search.officialOnly = true
         }
+        search.pageNum = 1
         search.run();
     })
 
@@ -416,8 +427,17 @@ $( () => {
         }, 90)
     })
 
+    //A touch of infinite scrolling added in
+    $(document).scroll( () => {
+        if ($(document).scrollTop() + $(window).height() === $(document).height() && Math.ceil(search.totalResults/50) > search.pageNum){
+            search.pageNum++
+            search.run()
+        }
+    })
+
     $('#infoCard').hide()
     search.populateSelects()
     encounter.populateSelects()
     search.run()
+    console.log($('html').height());
 })
