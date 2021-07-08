@@ -191,15 +191,26 @@ $( () => {
                 $row = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
                 $nameCell = $('<td>').text(`${object.count} x ${object.name}`).appendTo($row)
                 $exp = $('<td>').text(object.exp).appendTo($row)
+                $nameCell.click( (e) => {
+                    object.count--
+                    if (object.count === 0) {
+                        // console.log(encounter.monsters.indexOf(object));
+                        encounter.monsters.splice(encounter.monsters.indexOf(object),1)
+                    }
+
+                    encounter.refreshTable()
+                })
             }
-            //create a final row displaying adjusted encounter exp
-            $expRow = $('<tr>').addClass('encounterRow resultsRow').appendTo(encounter.$table)
-            $text = $('<th>').text('Adjusted Exp:').appendTo($expRow)
-            $adjExp = $('<th>').text(`${encounter.exp}`).appendTo($expRow)
-            //create a row to display encounter difficulty for the selected party
-            $difRow = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
-            $difText = $('<th>').text('Difficulty:').appendTo($difRow)
-            $difficulty = $('<th>').text(encounter.getDifficulty()).appendTo($difRow)
+            if (encounter.monsters.length > 0){
+                //create a final row displaying adjusted encounter exp
+                $expRow = $('<tr>').addClass('encounterRow resultsRow').appendTo(encounter.$table)
+                $text = $('<th>').text('Adjusted Exp:').appendTo($expRow)
+                $adjExp = $('<th>').text(`${encounter.exp}`).appendTo($expRow)
+                //create a row to display encounter difficulty for the selected party
+                $difRow = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
+                $difText = $('<th>').text('Difficulty:').appendTo($difRow)
+                $difficulty = $('<th>').text(encounter.getDifficulty()).appendTo($difRow)
+            }
         },
         populateSelects: () => {
             for (let i = 1; i <= 8; i++) {
