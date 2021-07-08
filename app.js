@@ -2,8 +2,13 @@ $( () => {
 
     const search = {
         //Options arrays let me use functions to populate my selects, making the code DRYer
+        crChoice: '',
+        typeChoice: '',
+        alignmentChoice: '',
+        officialOnly: false,
         crOptions: ['0','1/8','1/4','1/2','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'],
         typeOptions: ['aberration','beast','celestial','construct','dragon','elemental','fey','fiend','giant','humanoid','monstrosity','ooze','plant','undead'],
+        alignmentOptions: ['lawful good','neutral good','chaotic good','lawful neutral','neutral','chaotic neutral','lawful evil','neutral evil','chaotic evil','unaligned'],
         populateSelects: () => {
             for (let option of search.crOptions) {
                 $option = $('<option>').attr('value',`${option}`).text(`${option}`).appendTo($('#crDrop'))
@@ -11,17 +16,69 @@ $( () => {
             for (let option of search.typeOptions) {
                 $option = $('<option>').attr('value',`${option}`).text(`${option}`).appendTo($('#typeDrop'))
             }
+            for (let option of search.alignmentOptions) {
+                $option = $('<option>').attr('value',`${option}`).text(`${option}`).appendTo($('#alignmentDrop'))
+            }
+        },
+        run: () => {
+            $('.searchResult').remove()
+            let sourceFilter = ''
+            if (search.officialOnly){
+                sourceFilter = 'wotc-srd'
+            }
+            $.ajax({
+                url:'https://api.open5e.com/monsters/',
+                data: {
+                    limit : 50,
+                    page: 1,
+                    document__slug: 'wotc-srd',
+                    challenge_rating: search.crChoice,
+                    type: search.typeChoice,
+                    alignment: search.alignmentChoice,
+                    document__slug: sourceFilter
+                }
+            }).then( (data) => {
+                for (let monster of data.results) {
+                    addSearchResult(monster)
+                };
+            },
+            () => {
+                console.log('bad request');
+            })
         }
-
     }
 
 
     //object containing variables and methods related to the encounter box
     const encounter = {
         $table: $('.encounterTable'),
+        partySize: 4,
+        partyLevel: 1,
         count: 0,
         monsters: [],
         exp: 0,
+        expThresholdsByLevel: {
+            1: [25,50,75,100],
+            2: [50,100,150,200],
+            3: [75,150,225,400],
+            4: [125,250,375,500],
+            5: [250,500,750,1100],
+            6: [300,600,900,1400],
+            7: [350,750,1100,1700],
+            8: [450,900,1400,2100],
+            9: [550,1100,1600,2400],
+            10: [600,1200,1900,2800],
+            11: [800,1600,2400,3600],
+            12: [1000,2000,3000,4500],
+            13: [1100,2200,3400,5100],
+            14: [1250,2500,3800,5700],
+            15: [1400,2800,4300,6400],
+            16: [1600,3200,4800,7200],
+            17: [2000,3900,5900,8800],
+            18: [2100,4200,6300,9500],
+            19: [2400,4900,7300,10900],
+            20: [2800,5700,8500,12700]
+        },
         crToExpTable: {
             '0': 10,
             '1/8': 25,
@@ -106,6 +163,23 @@ $( () => {
                 encounter.exp = sum * 4
             }
         },
+        getDifficulty: () => {
+            const partyThresholdEasy = encounter.partySize * encounter.expThresholdsByLevel[encounter.partyLevel][0]
+            const partyThresholdMedium = encounter.partySize * encounter.expThresholdsByLevel[encounter.partyLevel][1]
+            const partyThresholdHard = encounter.partySize * encounter.expThresholdsByLevel[encounter.partyLevel][2]
+            const partyThresholdDeadly = encounter.partySize * encounter.expThresholdsByLevel[encounter.partyLevel][3]
+            if (encounter.exp < partyThresholdEasy) {
+                return 'Trivial'
+            } else if (encounter.exp < partyThresholdMedium) {
+                return 'Easy'
+            } else if (encounter.exp < partyThresholdHard) {
+                return 'Medium'
+            } else if (encounter.exp < partyThresholdDeadly) {
+                return 'Hard'
+            } else {
+                return 'Deadly'
+            }
+        },
         //update the encounter table to reflect changes to the monsters array
         refreshTable: () => {
             //clear all rows but the header row
@@ -122,7 +196,32 @@ $( () => {
             $expRow = $('<tr>').addClass('encounterRow resultsRow').appendTo(encounter.$table)
             $text = $('<th>').text('Adjusted Exp:').appendTo($expRow)
             $adjExp = $('<th>').text(`${encounter.exp}`).appendTo($expRow)
+            //create a row to display encounter difficulty for the selected party
+            $difRow = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
+            $difText = $('<th>').text('Difficulty:').appendTo($difRow)
+            $difficulty = $('<th>').text(encounter.getDifficulty()).appendTo($difRow)
         },
+        populateSelects: () => {
+            for (let i = 1; i <= 8; i++) {
+                $('<option>').attr('value',i).text(i).appendTo($('#partySizeDrop'))
+            }
+            for (let i = 1; i <= 20; i++) {
+                $('<option>').attr('value',i).text(i).appendTo($('#partyLevelDrop'))
+            }
+        }
+    }
+
+    //Turns lowercase key names with underscores into separate, capitalized words
+    const toCapString = string => {
+        let splitString = string.split('_')
+        // for (let word of splitString) {
+        //     word = word.slice(0,1).toUpperCase() + word.slice(1)
+        //     console.log(word);
+        // }
+        for (let i = 0; i < splitString.length; i++) {
+            splitString[i] = splitString[i].slice(0,1).toUpperCase() + splitString[i].slice(1)
+        }
+        return splitString.join(' ')
     }
 
     const addSearchResult = (monster) => {
@@ -145,6 +244,7 @@ $( () => {
     }
 
     const populateCard = (monster) => {
+        $('#infoCard').show().css('transform','scale(1)')
         $('#cardName').text(monster.name)
         $('#cardTypes').text(`${monster.size} ${monster.type}, ${monster.alignment}`)
         //AC logic
@@ -174,143 +274,136 @@ $( () => {
         $('#cardWis').text(monster.wisdom)
         $('#cardCha').text(monster.charisma)
         //traits
-        
+        $('#cardTraits').empty()
+        //saves
+        let hasSave = false
+        const saves = ['Strength_save','Dexterity_save','Constitution_save','Intelligence_save','Wisdom_save','Charisma_save']
+        for (let save of saves) {
+            if (monster[save.toLowerCase()]){
+                hasSave = true
+                const $span = $('<span>').text(`${save.slice(0,3)} +${monster[save.toLowerCase()]}, `).addClass('saves').appendTo($('#cardTraits'))
+            }
+        }
+        //removes comma from last save, there's probably a better way to do this but oh well
+        $('.saves').last().text($('.saves').last().text().slice(0,-2))
+        //if there are any saves, stick the Saving Throws header in front of them
+        if (hasSave){
+            $b = $('<b>').text('Saving Throws ')
+            $('#cardTraits').prepend($b)
+        }
+        //skills
+        if (Object.keys(monster.skills).length > 0) {
+            const $div = $('<div>').appendTo($('#cardTraits'))
+            const $title = $('<b>').text('Skills ').appendTo($div)
+            for (let skill in monster.skills){
+                const $name = $('<span>').text(toCapString(skill)).appendTo($div)
+                const $bonus = $('<span>').text(` +${monster.skills[skill]}, `).addClass('bonus').appendTo($div)
+            }
+            $('.bonus').last().text($('.bonus').last().text().slice(0,-2))
+        }
+        //The rest of the traits are formatted much simpler so I made the code a little DRYer
+        const stringTraits = ['damage_vulnerabilities','damage_resistances','damage_immunities','condition_immunities','senses','languages']
+        for (let trait of stringTraits) {
+            if (monster[trait] !== '') {
+                const $div = $('<div>').appendTo($('#cardTraits'))
+                const $title = $('<b>').text(toCapString(trait) + ' ').appendTo($div)
+                const $text = $('<span>').text(monster[trait]).appendTo($div)
+            }
+        }
+        //Special Abilities
+        $('#cardSpecialAbilities').empty()
+        if (monster.special_abilities !== '') {
+            for (ability of monster.special_abilities) {
+                const $div = $('<div>').appendTo($('#cardSpecialAbilities'))
+                const $title = $('<em>').text(ability.name + '. ').appendTo($div)
+                const $desc = $('<span>').text(ability.desc).appendTo($div)
+            }
+        }
+        //Actions
+        $('#cardActions').empty()
+        for (let action of monster.actions){
+            const $div = $('<div>').appendTo($('#cardActions'))
+            const $name = $('<em>').text(action.name + '. ').appendTo($div)
+            const $desc = $('<span>').text(action.desc).appendTo($div)
+        }
+        //reactions
+        $('#cardReactions').empty()
+        if (monster.reactions === '') {
+            $('.cardReactionsContainer').hide()
+        } else {
+            $('.cardReactionsContainer').show()
+            for (let reaction of monster.reactions){
+                const $div = $('<div>').appendTo($('#cardReactions'))
+                const $name = $('<em>').text(reaction.name + '. ').appendTo($div)
+                const $desc = $('<p style="display: inline">').text(reaction.desc).appendTo($div)
+            }
+        }
+        //legendary Actions
+        $('#cardLegendaryActions').empty()
+        if (monster.legendary_actions === '') {
+            $('.cardLegendaryActionsContainer').hide()
+        } else {
+            $('.cardLegendaryActionsContainer').show()
+            const $legDesc = $('<p>').text(monster.legendary_desc).appendTo($('#cardLegendaryActions'))
+            for (let action of monster.legendary_actions){
+                const $div = $('<div>').appendTo($('#cardLegendaryActions'))
+                const $name = $('<em>').text(action.name + '. ').appendTo($div)
+                const $desc = $('<p style="display: inline">').text(action.desc).appendTo($div)
+            }
+        }
+
+
     }
 
     $('#crDrop').change( (e) => {
         e.preventDefault()
-        console.log($('#crDrop').val());
-        return false
+        search.crChoice = $('#crDrop').val()
+        search.run()
+        // return false
     })
 
+    $('#typeDrop').change( (e) => {
+        e.preventDefault()
+        search.typeChoice = $('#typeDrop').val()
+        search.run()
+    })
+
+    $('#alignmentDrop').change( (e) => {
+        e.preventDefault()
+        search.alignmentChoice = $('#alignmentDrop').val()
+        search.run()
+    })
+
+    $('#officialOnly').change( () => {
+        if (search.officialOnly) {
+            search.officialOnly = false
+        } else {
+            search.officialOnly = true
+        }
+        search.run();
+    })
+
+    $('#partySizeDrop').change( (e) => {
+        e.preventDefault()
+        encounter.partySize = $('#partySizeDrop').val()
+        encounter.refreshTable()
+    })
+
+    $('#partyLevelDrop').change( (e) => {
+        e.preventDefault()
+        encounter.partyLevel = $('#partyLevelDrop').val()
+        encounter.refreshTable()
+    })
+
+    $('#infoCard').click( () => {
+        $('#infoCard').css('transform','scale(.25)')
+        setTimeout( () => {
+            $('#infoCard').hide()
+        }, 90)
+    })
+
+    $('#infoCard').hide()
     search.populateSelects()
-
-    const dragon = {
-            "slug": "adult-black-dragon",
-            "name": "Adult Black Dragon",
-            "size": "Huge",
-            "type": "dragon",
-            "subtype": "",
-            "group": "Black Dragon",
-            "alignment": "chaotic evil",
-            "armor_class": 19,
-            "armor_desc": "natural armor",
-            "hit_points": 195,
-            "hit_dice": "17d12+85",
-            "speed": {
-                "walk": 40,
-                "fly": 80,
-                "swim": 40
-            },
-            "strength": 23,
-            "dexterity": 14,
-            "constitution": 21,
-            "intelligence": 14,
-            "wisdom": 13,
-            "charisma": 17,
-            "strength_save": null,
-            "dexterity_save": 7,
-            "constitution_save": 10,
-            "intelligence_save": null,
-            "wisdom_save": 6,
-            "charisma_save": 8,
-            "perception": 11,
-            "skills": {
-                "perception": 11,
-                "stealth": 7
-            },
-            "damage_vulnerabilities": "",
-            "damage_resistances": "",
-            "damage_immunities": "acid",
-            "condition_immunities": "",
-            "senses": "blindsight 60 ft., darkvision 120 ft., passive Perception 21",
-            "languages": "Common, Draconic",
-            "challenge_rating": "14",
-            "actions": [
-                {
-                    "name": "Multiattack",
-                    "desc": "The dragon can use its Frightful Presence. It then makes three attacks: one with its bite and two with its claws."
-                },
-                {
-                    "name": "Bite",
-                    "desc": "Melee Weapon Attack: +11 to hit, reach 10 ft., one target. Hit: 17 (2d10 + 6) piercing damage plus 4 (1d8) acid damage.",
-                    "attack_bonus": 11,
-                    "damage_dice": "2d10+1d8",
-                    "damage_bonus": 6
-                },
-                {
-                    "name": "Claw",
-                    "desc": "Melee Weapon Attack: +11 to hit, reach 5 ft., one target. Hit: 13 (2d6 + 6) slashing damage.",
-                    "attack_bonus": 11,
-                    "damage_dice": "2d6",
-                    "damage_bonus": 6
-                },
-                {
-                    "name": "Tail",
-                    "desc": "Melee Weapon Attack: +11 to hit, reach 15 ft., one target. Hit: 15 (2d8 + 6) bludgeoning damage.",
-                    "attack_bonus": 11,
-                    "damage_dice": "2d8",
-                    "damage_bonus": 6
-                },
-                {
-                    "name": "Frightful Presence",
-                    "desc": "Each creature of the dragon's choice that is within 120 feet of the dragon and aware of it must succeed on a DC 16 Wisdom saving throw or become frightened for 1 minute. A creature can repeat the saving throw at the end of each of its turns, ending the effect on itself on a success. If a creature's saving throw is successful or the effect ends for it, the creature is immune to the dragon's Frightful Presence for the next 24 hours."
-                },
-                {
-                    "name": "Acid Breath (Recharge 5-6)",
-                    "desc": "The dragon exhales acid in a 60-foot line that is 5 feet wide. Each creature in that line must make a DC 18 Dexterity saving throw, taking 54 (12d8) acid damage on a failed save, or half as much damage on a successful one.",
-                    "attack_bonus": 0,
-                    "damage_dice": "12d8"
-                }
-            ],
-            "reactions": "",
-            "legendary_desc": "The dragon can take 3 legendary actions, choosing from the options below. Only one legendary action option can be used at a time and only at the end of another creature's turn. The dragon regains spent legendary actions at the start of its turn.",
-            "legendary_actions": [
-                {
-                    "name": "Detect",
-                    "desc": "The dragon makes a Wisdom (Perception) check."
-                },
-                {
-                    "name": "Tail Attack",
-                    "desc": "The dragon makes a tail attack."
-                },
-                {
-                    "name": "Wing Attack (Costs 2 Actions)",
-                    "desc": "The dragon beats its wings. Each creature within 10 ft. of the dragon must succeed on a DC 19 Dexterity saving throw or take 13 (2d6 + 6) bludgeoning damage and be knocked prone. The dragon can then fly up to half its flying speed."
-                }
-            ],
-            "special_abilities": [
-                {
-                    "name": "Amphibious",
-                    "desc": "The dragon can breathe air and water."
-                },
-                {
-                    "name": "Legendary Resistance (3/Day)",
-                    "desc": "If the dragon fails a saving throw, it can choose to succeed instead."
-                }
-            ],
-            "spell_list": [],
-            "img_main": null,
-            "document__slug": "wotc-srd",
-            "document__title": "Systems Reference Document",
-            "document__license_url": "http://open5e.com/legal"
-        }
-
-    // populateCard(dragon)
-
-    $.ajax({
-        url:'https://api.open5e.com/monsters/',
-        data: {
-            limit : 50,
-            page: 1,
-            document__slug: 'wotc-srd',
-        }
-    }).then( (data) => {
-        for (let monster of data.results) {
-            addSearchResult(monster)
-        };
-    },
-    () => {
-        console.log('bad request');
-    })
+    encounter.populateSelects()
+    search.run()
 })

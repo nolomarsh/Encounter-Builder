@@ -50,11 +50,11 @@ tbody {
 }
 
 .encounterTable tr :first-child {
-    width: 75%;
+    width: 65%;
 }
 
 .encounterTable tr :last-child {
-    width: 25%;
+    width: 35%;
 }
 
 
@@ -114,21 +114,39 @@ tr * {
 
 /*Info card formatting*/
 #infoCard {
+    display: flex;
     position: fixed;
-    width: 40%;
-    height: 500px;
-    /* margin: 10vh auto; */
+    width: 400px;
+    max-height: 500px;
+    margin: 10vh 30%;
     right: 0;
     background: gold;
-    display: flex;
     flex-direction: column;
+    overflow-y: scroll;
     align-items: center;
     border: 1px solid goldenrod;
     border-radius: 5px;
+    padding: 5px;
+    transform: scale(.25);
+    transition: .1s;
 }
 
 #infoCard table {
     border-top: 2px solid black;
+}
+
+#infoCard div {
+    width: 95%;
+    margin-top: 10px;
+}
+
+ span {
+    margin: 0;
+    padding: 0;
+}
+
+#infoCard div h4 {
+    border-bottom: 1px solid black;
 }
 
 #cardBasics {
@@ -153,15 +171,7 @@ tr * {
     border-bottom: 2px solid black;
 }
 
-#infoCard div {
-    width: 95%;
-}
-
-#infoCard span {
-    margin: 0;
-    padding: 0;
-}
-
-#infoCard div h4 {
+#cardTraits {
     border-bottom: 1px solid black;
+    padding: 2px 0;
 }

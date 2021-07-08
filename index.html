@@ -13,26 +13,65 @@
             <h1>Encounter Builder</h1>
             <div class="innerContainer">
                 <table class="encounterTable">
+                    <tr id='partyInputHead'>
+                        <td>
+                            <label for="partySizeDrop">Party Size:</label>
+                        </td>
+                        <td>
+                            <label for="partyLevelDrop">Level:</label>
+
+                        </td>
+                    </tr>
+                    <tr id='partyInput'>
+                        <td>
+                            <select id="partySizeDrop" name="size">
+                            </select>
+                        </td>
+                        <td>
+                            <select id="partyLevelDrop" name="level">
+                            </select>
+                        </td>
+                    <tr>
+                        <th colspan="2">Encounter</th>
+                    </tr>
                     <tr id="encounterHeader">
                         <th>Name</th>
                         <th>Exp(each)</th>
                     </tr>
                 </table>
                 <div class="searchContainer">
-                    <div id="filterBar">
-                        <form class="" id="chooseCR">
-                            <p>CR:</p>
-                            <select class="filterDrop" name="cr" id='crDrop'>
-
-                            </select>
-                        </form>
-                        <form class="" id='chooseType'>
-                            <p>Type:</p>
-                            <select class="filterDrop" name="type" id='typeDrop'>
-
-                            </select>
-                        </form>
-                    </div>
+                    <table id="filterBar">
+                        <tr>
+                            <td>
+                                <form class="" id="chooseCR">
+                                    <label for="crDrop">CR:</label>
+                                    <select class="filterDrop" name="cr" id='crDrop'>
+                                        <option value="">-</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <form class="" id='chooseType'>
+                                    <label for="typeDrop">Type:</label>
+                                    <select class="filterDrop" name="type" id='typeDrop'>
+                                        <option value="">-</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td>
+                                <form class="" id='chooseAlignment'>
+                                    <label for="alignmentDrop">Alignment</label>
+                                    <select class="filterDrop" name="alignment" id='alignmentDrop'>
+                                        <option value="">-</option>
+                                    </select>
+                                </form>
+                            </td>
+                            <td style="display:flex; flex-direction:column; align-items:center">
+                                <label for="officialOnly">WOTC Official</label>
+                                <input type="checkbox" id="officialOnly" value="">
+                            </td>
+                        </tr>
+                    </table>
                     <table id="searchResults">
                         <tr id='searchHeader'>
                             <th>Name</th>
@@ -79,20 +118,29 @@
                         <td id='cardCha'>1</td>
                     </tr>
                 </table>
-                <div class="cardTraits">
+                <div id="cardTraits">
 
                 </div>
-                <div class="cardSpecialAbilities">
+                <div id="cardSpecialAbilities">
 
                 </div>
-                <div class="cardActions">
+                <div class="cardActionsContainer">
                     <h4>Actions</h4>
+                    <div id="cardActions">
+
+                    </div>
                 </div>
-                <div class="cardReactions">
+                <div class="cardReactionsContainer">
                     <h4>Reactions</h4>
+                    <div id="cardReactions">
+
+                    </div>
                 </div>
-                <div class="cardLegendaryActions">
+                <div class="cardLegendaryActionsContainer">
                     <h4>Legendary Actions</h4>
+                    <div id="cardLegendaryActions">
+
+                    </div>
                 </div>
             </div>
         </div>
