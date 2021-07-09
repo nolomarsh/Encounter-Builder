@@ -27,7 +27,7 @@ h1 {
     display: flex;
     align-items: flex-start;
     width: 100%;
-    min-width: 425px;
+    min-width: 400px;
 }
 
 /* ------------------- Encounter table formatting ------------------- */
@@ -79,6 +79,10 @@ tbody {
     background: #DDBEA8;
     border-radius: 5px;
     width: 100%;
+}
+
+#filterBar td > :not(input) {
+    padding: 0;
 }
 
 #searchIn {
