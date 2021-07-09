@@ -424,6 +424,7 @@ $( () => {
         $('.orderBtn').css('text-decoration','none')
         $(e.currentTarget).css('text-decoration','underline')
         search.ordering = $(e.currentTarget).attr('value')
+        search.pageNum = 1
         search.run()
     })
 
