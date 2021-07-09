@@ -1,7 +1,8 @@
 $( () => {
-
+    //object containing variables and methods related to search functionality
     const search = {
         //Options arrays let me use functions to populate my selects, making the code DRYer
+        $table: $('#searchResults'),
         searchString: '',
         crChoice: '',
         typeChoice: '',
@@ -26,7 +27,7 @@ $( () => {
         },
         //appends a tr containing all of the info for the entry to the search results table
         printResult: (monster) => {
-            $tr = $('<tr>').addClass('searchResult').appendTo($('#searchResults'))
+            $tr = $('<tr>').addClass('mainRow').appendTo(search.$table)
             $name = $('<td>').text(monster.name).appendTo($tr)
             $infoIcon = $('<i>').addClass("fas fa-info-circle")
             $name.prepend($infoIcon)
@@ -45,7 +46,7 @@ $( () => {
         },
         run: () => {
             if (search.pageNum === 1) {
-                $('.searchResult').remove()
+                $('.mainRow').remove()
             }
             //makes the officialOnly boolean determine whether 3rd party content is displayed
             let sourceFilter = ''
@@ -75,7 +76,6 @@ $( () => {
             })
         }
     }
-
 
     //object containing variables and methods related to the encounter box
     const encounter = {
@@ -267,6 +267,7 @@ $( () => {
         return splitString.join(' ')
     }
 
+    //A very long function that populates the info card with the various deep info 
     const populateCard = (monster) => {
         $('#infoCard').show().css('transform','scale(1)')
         $('#cardName').text(monster.name)
@@ -359,7 +360,7 @@ $( () => {
             for (let reaction of monster.reactions){
                 const $div = $('<div>').appendTo($('#cardReactions'))
                 const $name = $('<em>').text(reaction.name + '. ').appendTo($div)
-                const $desc = $('<p style="display: inline">').text(reaction.desc).appendTo($div)
+                const $desc = $('<span>').text(reaction.desc).appendTo($div)
             }
         }
         //legendary Actions
@@ -372,39 +373,15 @@ $( () => {
             for (let action of monster.legendary_actions){
                 const $div = $('<div>').appendTo($('#cardLegendaryActions'))
                 const $name = $('<em>').text(action.name + '. ').appendTo($div)
-                const $desc = $('<p style="display: inline">').text(action.desc).appendTo($div)
+                const $desc = $('<span>').text(action.desc).appendTo($div)
             }
         }
-
-
     }
 
-    //Listeners for the various search filters
-    $('#searchIn').change( (e) => {
+    //Listeners for search filters
+    $('.filter').change( (e) => {
         e.preventDefault()
-        search.searchString = $('#searchIn').val()
-        search.pageNum = 1
-        search.run()
-
-    })
-
-    $('#crDrop').change( (e) => {
-        e.preventDefault()
-        search.crChoice = $('#crDrop').val()
-        search.pageNum = 1
-        search.run()
-    })
-
-    $('#typeDrop').change( (e) => {
-        e.preventDefault()
-        search.typeChoice = $('#typeDrop').val()
-        search.pageNum = 1
-        search.run()
-    })
-
-    $('#alignmentDrop').change( (e) => {
-        e.preventDefault()
-        search.alignmentChoice = $('#alignmentDrop').val()
+        search[$(e.currentTarget).attr('choice')] = $(e.currentTarget).val()
         search.pageNum = 1
         search.run()
     })

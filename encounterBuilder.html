@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width,initial-scale=1.0">
         <link rel="stylesheet" href="style.css">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-        <script src="app.js" charset="utf-8"></script>
+        <script src="encounterBuilder.js" charset="utf-8"></script>
         <script src="https://kit.fontawesome.com/5630320f4a.js" crossorigin="anonymous"></script>
         <link rel="icon" href="d20.png">
     </head>
@@ -44,14 +44,14 @@
                         <tr>
                             <td colspan="4">
                                 <label for="searchIn">Search: </label>
-                                <input type="text" id="searchIn">
+                                <input type="text" class="filter" id="searchIn" choice='searchString' placeholder="-">
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 <form class="" id="chooseCR">
                                     <label for="crDrop">CR:</label>
-                                    <select class="filterDrop" name="cr" id='crDrop'>
+                                    <select class="filter" name="cr" id='crDrop' choice='crChoice'>
                                         <option value="">-</option>
                                     </select>
                                 </form>
@@ -59,7 +59,7 @@
                             <td>
                                 <form class="" id='chooseType'>
                                     <label for="typeDrop">Type:</label>
-                                    <select class="filterDrop" name="type" id='typeDrop'>
+                                    <select class="filter" name="type" id='typeDrop' choice='typeChoice'>
                                         <option value="">-</option>
                                     </select>
                                 </form>
@@ -67,7 +67,7 @@
                             <td>
                                 <form class="" id='chooseAlignment'>
                                     <label for="alignmentDrop">Alignment</label>
-                                    <select class="filterDrop" name="alignment" id='alignmentDrop'>
+                                    <select class="filter" name="alignment" id='alignmentDrop' choice='alignmentChoice'>
                                         <option value="">-</option>
                                     </select>
                                 </form>
