@@ -2,10 +2,12 @@ $( () => {
 
     const search = {
         //Options arrays let me use functions to populate my selects, making the code DRYer
+        searchString: '',
         crChoice: '',
         typeChoice: '',
         alignmentChoice: '',
         officialOnly: false,
+        ordering: '',
         pageNum: 1,
         totalResults: 0,
         crOptions: ['0','1/8','1/4','1/2','1','2','3','4','5','6','7','8','9','10','11','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30'],
@@ -55,11 +57,12 @@ $( () => {
                 data: {
                     limit : 50,
                     page: search.pageNum,
-                    document__slug: 'wotc-srd',
+                    search: search.searchString,
                     challenge_rating: search.crChoice,
                     type: search.typeChoice,
                     alignment: search.alignmentChoice,
-                    document__slug: sourceFilter
+                    document__slug: sourceFilter,
+                    ordering: search.ordering,
                 }
             }).then( (data) => {
                 for (let monster of data.results) {
@@ -214,18 +217,19 @@ $( () => {
             //create a row for each unique type of monster in the encounter, including how many of each kind and their individual experience value
             for (let object of encounter.monsters) {
                 $row = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
-                $nameCell = $('<td>').text(`${object.count} x ${object.name}`).appendTo($row)
+                $nameCell = $('<td>').text(`${object.count} x ${object.name}`).addClass('encounterNameCell').appendTo($row)
                 $exp = $('<td>').text(object.exp).appendTo($row)
+                //Clicking on a monster name reduces the count by 1, removing it entirely if reduced to 0
                 $nameCell.click( (e) => {
                     object.count--
                     if (object.count === 0) {
                         // console.log(encounter.monsters.indexOf(object));
                         encounter.monsters.splice(encounter.monsters.indexOf(object),1)
                     }
-
                     encounter.refreshTable()
                 })
             }
+            //Only generates the exp row and difficulty row if there are monsters in the encounter
             if (encounter.monsters.length > 0){
                 //create a final row displaying adjusted encounter exp
                 $expRow = $('<tr>').addClass('encounterRow resultsRow').appendTo(encounter.$table)
@@ -375,12 +379,20 @@ $( () => {
 
     }
 
+    //Listeners for the various search filters
+    $('#searchIn').change( (e) => {
+        e.preventDefault()
+        search.searchString = $('#searchIn').val()
+        search.pageNum = 1
+        search.run()
+
+    })
+
     $('#crDrop').change( (e) => {
         e.preventDefault()
         search.crChoice = $('#crDrop').val()
         search.pageNum = 1
         search.run()
-        // return false
     })
 
     $('#typeDrop').change( (e) => {
@@ -407,6 +419,15 @@ $( () => {
         search.run();
     })
 
+    //listeners to change ordering of the search list, marking the current ordering column with an underline
+    $('.orderBtn').click( (e) => {
+        $('.orderBtn').css('text-decoration','none')
+        $(e.currentTarget).css('text-decoration','underline')
+        search.ordering = $(e.currentTarget).attr('value')
+        search.run()
+    })
+
+    //listeners for the party size and level selects
     $('#partySizeDrop').change( (e) => {
         e.preventDefault()
         encounter.partySize = $('#partySizeDrop').val()
@@ -419,6 +440,7 @@ $( () => {
         encounter.refreshTable()
     })
 
+    //Listener to make the card disappear with a small animation
     $('#infoCard').click( () => {
         $('#infoCard').css('transform','scale(.25)')
         setTimeout( () => {
@@ -426,7 +448,7 @@ $( () => {
         }, 90)
     })
 
-    //A touch of infinite scrolling added in
+    //A touch of "infinite" scrolling added in
     $(document).scroll( () => {
         if ($(document).scrollTop() + $(window).height() === $(document).height() && Math.ceil(search.totalResults/50) > search.pageNum){
             search.pageNum++
@@ -434,9 +456,9 @@ $( () => {
         }
     })
 
+    //run important functions on startup
     $('#infoCard').hide()
     search.populateSelects()
     encounter.populateSelects()
     search.run()
-    console.log($('html').height());
 })

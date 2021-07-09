@@ -5,7 +5,9 @@
     padding: 0;
 }
 
-body {
+body,
+select,
+input {
     background: linen
 }
 
@@ -27,7 +29,7 @@ h1 {
     width: 100%;
 }
 
-/*Encounter table formatting*/
+/* ------------------- Encounter table formatting ------------------- */
 .encounterTable {
     width: 28%;
     margin: 0 1%;
@@ -62,19 +64,24 @@ tbody {
     margin: 0 auto;
 }
 
-/* search formatting */
-#filterBar {
-    display: flex;
-    flex-wrap: wrap;
-    background: #DDBEA8;
-    padding: .5em;
-    border-radius: 5px;
-}
+/* ------------- search formatting ------------------ */
 
 .searchContainer {
     width: 65%;
     right: 0;
     margin: 0 1%;
+}
+
+#filterBar {
+    display: flex;
+    flex-wrap: wrap;
+    background: #DDBEA8;
+    border-radius: 5px;
+}
+
+#searchIn {
+    border-style: solid;
+    border-width: 1px;
 }
 
 #searchResults {
@@ -101,7 +108,6 @@ tbody {
     width: 100%;
     height: 45px;
     padding: 5px;
-
     margin-top: 10px;
     border-radius: 5px;
     vertical-align: middle;
@@ -110,6 +116,14 @@ tbody {
 #searchHeader * {
     text-align: left;
     border-bottom: 3px solid goldenrod;
+}
+
+.orderBtn {
+    cursor: pointer;
+}
+
+#orderName {
+    text-decoration: underline;
 }
 
 .searchResult :first-child {
@@ -127,6 +141,7 @@ tr * {
 
 .fas {
     transition: .2s;
+    cursor: pointer;
 }
 
 .fas:hover {
@@ -134,7 +149,7 @@ tr * {
     transform: scale(1.2)
 }
 
-/*Info card formatting*/
+/* ------------- Info card formatting -------------- */
 #infoCard {
     display: flex;
     position: fixed;
@@ -142,7 +157,7 @@ tr * {
     max-height: 500px;
     margin: 10vh 30%;
     right: 0;
-    background: gold;
+    background: #DDBEA8;
     flex-direction: column;
     overflow-y: scroll;
     align-items: center;
@@ -152,11 +167,12 @@ tr * {
     transform: scale(.25);
     transition: .1s;
     z-index: 100;
+    cursor: pointer;
 }
 
 #infoCard::-webkit-scrollbar {
-    /* background-color: gold; */
-    width: 0;
+    background-color: #DDBEA8;
+    width: 0.5em;
 }
 
 #infoCard table {

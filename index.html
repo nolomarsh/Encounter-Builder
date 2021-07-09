@@ -39,7 +39,14 @@
                     </tr>
                 </table>
                 <div class="searchContainer">
+
                     <table id="filterBar">
+                        <tr>
+                            <td colspan="4">
+                                <label for="searchIn">Search: </label>
+                                <input type="text" id="searchIn">
+                            </td>
+                        </tr>
                         <tr>
                             <td>
                                 <form class="" id="chooseCR">
@@ -73,30 +80,30 @@
                     </table>
                     <table id="searchResults">
                         <tr id='searchHeader'>
-                            <th>Name</th>
-                            <th>CR(exp)</th>
-                            <th>Type</th>
-                            <th>Alignment</th>
+                            <th class='orderBtn' id='orderName' value=''>Name</th>
+                            <th class='orderBtn' id='orderCR' value='challenge_rating'>CR (exp)</th>
+                            <th class='orderBtn' id='orderType' value='type'>Type</th>
+                            <th class='orderBtn' id='orderAlignment' value='alignment'>Alignment</th>
                             <th>Add</th>
                         </tr>
                     </table>
                 </div>
             </div>
             <div id="infoCard">
-                <h2 id="cardName">Animated Armor</h2>
-                <em id="cardTypes">Medium construct, unaligned</em>
+                <h2 id="cardName"></h2>
+                <em id="cardTypes"></em>
                 <table id="cardBasics">
                     <tr>
                         <th>AC:</th>
-                        <td id="cardAC">18 (natural Armor)</td>
+                        <td id="cardAC"></td>
                         <th>Spd:</th>
                         <td id='cardSpeeds'></td>
                     </tr>
                     <tr>
                         <th>HP:</th>
-                        <td id='cardHP'>33 (6d8 + 6)</td>
+                        <td id='cardHP'></td>
                         <th>CR:</th>
-                        <td id="cardCR">1 (200 XP)</td>
+                        <td id="cardCR"></td>
                     </tr>
                 </table>
                 <table id="cardAbilityScores">
@@ -109,12 +116,12 @@
                         <th>CHA</th>
                     </tr>
                     <tr>
-                        <td id='cardStr'>14</td>
-                        <td id='cardDex'>10</td>
-                        <td id='cardCon'>13</td>
-                        <td id='cardInt'>1</td>
-                        <td id='cardWis'>5</td>
-                        <td id='cardCha'>1</td>
+                        <td id='cardStr'></td>
+                        <td id='cardDex'></td>
+                        <td id='cardCon'></td>
+                        <td id='cardInt'></td>
+                        <td id='cardWis'></td>
+                        <td id='cardCha'></td>
                     </tr>
                 </table>
                 <div id="cardTraits">
