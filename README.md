@@ -2,6 +2,8 @@
 
 This project is a first attempt at a fully functional application based around making an AJAX request to an API. I chose the open5e API, containing data about Dungeons & Dragons 5th Edition. The first portion of the application is an encounter builder including a filterable list of monsters from the SRD Monster Manual, as well as some third party sources. The second portion is a filterable spell list with all data coming from the Player's Handbook.
 
+Live link: https://heuristic-shirley-fcb22c.netlify.app/
+
 ## The Apps
 ### Encounter Builder
 
