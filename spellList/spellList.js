@@ -59,7 +59,7 @@ $( () => {
                 $('<span>').text(' (concentration)').appendTo($duration)
             }
             //Creates modal row after each entry containing decription, material details(if applicable), upcast details (if applicable)
-            const $hiddenRow = $('<tr>').addClass('hidden').appendTo(search.$table)
+            const $hiddenRow = $('<tr>').addClass('modalRow hidden').appendTo(search.$table)
             const $hiddenPane = $('<td colspan="7">').addClass('hiddenPane').appendTo($hiddenRow)
             if (spell.material !== '') {
                 const $material = $('<p>').text(spell.material).appendTo($hiddenPane)
@@ -81,7 +81,7 @@ $( () => {
         run: () => {
             if (search.pageNum === 1) {
                 $('.mainRow').remove()
-                $('.hiddenRow').remove()
+                $('.modalRow').remove()
             }
             $.ajax({
                 url:'https://api.open5e.com/spells/',
