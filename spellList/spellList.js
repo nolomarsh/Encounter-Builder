@@ -7,6 +7,7 @@ $( () => {
         levelChoice: '',
         schoolChoice: '',
         classChoice: '',
+        order: '',
         levelOptions: ['0','1','2','3','4','5','6','7','8','9'],
         schoolOptions: ['Abjuration','Conjuration','Divination','Enchantment','Evocation','Illusion','Necromancy','Transmutation'],
         classOptions: ['Bard','Cleric','Druid','Paladin','Ranger','Paladin','Ranger','Sorcerer','Warlock','Wizard'],
@@ -92,15 +93,22 @@ $( () => {
                     level_int: search.levelChoice,
                     school: search.schoolChoice,
                     document__slug: 'wotc-srd',
-                    ordering: 'duration'
+                    ordering: search.order
                 }
             }).then( (data) => {
                 for (let spell of data.results) {
                     //had to put the conditional in because API search functionality returned unexpected results
-                    if (search.searchString === '' || (spell.name.toLowerCase()).includes(search.searchString.toLowerCase())){
+                    if ((search.searchString === ''
+                        || (spell.name.toLowerCase()).includes(search.searchString.toLowerCase()))
+                        && (search.classChoice === '' || spell.dnd_class.includes(search.classChoice))){
                         search.printResult(spell)
                     }
                 }
+                if ($('.mainRow').length <= 15) {
+                    search.pageNum++
+                    search.run()
+                }
+
                 search.totalResults = data.count
             }, () => {
                 console.log('Bad request');
@@ -117,8 +125,17 @@ $( () => {
         search.run()
     })
 
+    $('.orderBtn').click( (e) => {
+        $('.orderBtn').css('text-decoration','none')
+        $(e.currentTarget).css('text-decoration','underline')
+        search.order = $(e.currentTarget).attr('value')
+        search.pageNum = 1
+        search.run()
+    })
+
     $(document).scroll( () => {
-        if ($(document).scrollTop() + $(window).height() === $(document).height() && Math.ceil(search.totalResults/50) > search.pageNum){
+        if (($(document).scrollTop() + $(window).height() === $(document).height())
+            && Math.ceil(search.totalResults/50) > search.pageNum){
             search.pageNum++
             search.run()
         }

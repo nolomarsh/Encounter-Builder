@@ -273,6 +273,10 @@ b {
         width: 25%;
     }
 
+    nav {
+        width: 80%;
+    }
+
 }
 
 /* --------- Spell List Specific Formatting ---------- */
