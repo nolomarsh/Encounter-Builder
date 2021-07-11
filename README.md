@@ -16,3 +16,8 @@ Clicking the "+" button at the right end of a row adds the monster to the curren
 
 This app incorporates much of the same functionality as the encounter builder, minus the encounter table itself. Users may enter a string or search criteria in the dropdowns to filter the list of spells. Clicking the info button toggles the modal row for the given spell, displaying deeper details about the spell's effects.
 
+## General Comments
+
+The API had many branches for different types of game information, but I was a little disappointed to discover how little data was in most of the other branches/how poorly it was formatted. I hoped to make a small character builder application, but given that each class had only a single subclass listed and the fact that each class's entire list of class features was given in a single string, I opted not to.
+
+I feel compelled to also formally note on here that - and if you've talked to me for ten minutes, you've heard me say it about a dozen times -  I am not much of a designer. I spent considerable time fiddling with colors and fonts before ultimately deciding that they all either looked the same or looked silly. I think the color palette works decently enough, and the font is easily readable on desktop and mobile so I decided to leave it as default.
