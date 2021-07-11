@@ -239,6 +239,10 @@ $( () => {
                 $difRow = $('<tr>').addClass('encounterRow').appendTo(encounter.$table)
                 $difText = $('<th>').text('Difficulty:').appendTo($difRow)
                 $difficulty = $('<th>').text(encounter.getDifficulty()).appendTo($difRow)
+
+                // $saveRow = $('<tr>').appendTo(encounter.$table)
+                // $saveBtn = $('<button>').attr('id','saveBtn').text('Save').appendTo($saveRow)
+                // $saveBtn.click(encounter.save)
             }
         },
         populateSelects: () => {
@@ -251,7 +255,12 @@ $( () => {
             for (let i = 1; i <= 20; i++) {
                 $('<option>').attr('value',i).text(i).appendTo($('#partyLevelDrop'))
             }
-        }
+        },
+        // save: () => {
+        //     localStorage.setItem('encounter1',encounter.monsters)
+        //     let test = localStorage.getItem('encounter1')
+        //     console.log(test[0]);
+        // }
     }
 
     //Turns lowercase key names with underscores into separate, capitalized words
