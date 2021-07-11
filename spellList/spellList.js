@@ -94,7 +94,10 @@ $( () => {
                 }
             }).then( (data) => {
                 for (let spell of data.results) {
-                    search.printResult(spell)
+                    //had to put the conditional in because API search functionality returned unexpected results
+                    if (search.searchString === '' || (spell.name.toLowerCase()).includes(search.searchString.toLowerCase())){
+                        search.printResult(spell)
+                    }
                 }
                 search.totalResults = data.count
             }, () => {
