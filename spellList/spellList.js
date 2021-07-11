@@ -1,4 +1,5 @@
 $( () => {
+    //An object containing variables and methods for the search and filter functionality
     const search = {
         $table: $('#searchResults'),
         totalResults: 0,
@@ -8,10 +9,11 @@ $( () => {
         schoolChoice: '',
         classChoice: '',
         order: '',
+        //provides tables from which to populate selects DRYly
         levelOptions: ['0','1','2','3','4','5','6','7','8','9'],
         schoolOptions: ['Abjuration','Conjuration','Divination','Enchantment','Evocation','Illusion','Necromancy','Transmutation'],
         classOptions: ['Bard','Cleric','Druid','Paladin','Ranger','Paladin','Ranger','Sorcerer','Warlock','Wizard'],
-        castingTimeOptions: ['1 bonus action','1 reaction','1 action','1 minute','10 minutes','1 hour','8 hours'],
+        //Populates the selects, run once at initialization of page
         populateSelects: () => {
             for (let option of search.levelOptions) {
                 $option = $('<option>').attr('value',option).appendTo($('#levelDrop'))
@@ -34,6 +36,7 @@ $( () => {
                 $option = $('<option>').attr('value',option).text(option).appendTo($('#classDrop'))
             }
         },
+        //Prints a table row with the spell basic details, followed by a modal row containing deeper details
         printResult: spell => {
             const $row = $('<tr>').addClass('mainRow').appendTo(search.$table)
             const $name = $('<td>').text(spell.name).appendTo($row)
@@ -79,11 +82,14 @@ $( () => {
                 $hiddenRow.toggleClass('hidden')
             })
         },
+        //Prints the search results based on the given filters
         run: () => {
+            //Clear the table if new filters are applied
             if (search.pageNum === 1) {
                 $('.mainRow').remove()
                 $('.modalRow').remove()
             }
+            //get data from the API based on search parameters
             $.ajax({
                 url:'https://api.open5e.com/spells/',
                 data: {
@@ -104,20 +110,23 @@ $( () => {
                         search.printResult(spell)
                     }
                 }
-                if ($('.mainRow').length <= 15) {
+                //Essentially, table grows until it extends off the page. Only necessary because of brute-force filtering above
+                if ($('.mainRow').length <= 20) {
                     search.pageNum++
                     search.run()
                 }
-
                 search.totalResults = data.count
             }, () => {
                 console.log('Bad request');
             })
         }
     }
+
+    //Initializes page
     search.populateSelects()
     search.run()
 
+    //Adds functionality to the filters
     $('.filter').change( (e) => {
         e.preventDefault()
         search[$(e.currentTarget).attr('choice')] = $(e.currentTarget).val()
@@ -125,6 +134,7 @@ $( () => {
         search.run()
     })
 
+    //sets ordering for the columns for which it makes sense
     $('.orderBtn').click( (e) => {
         $('.orderBtn').css('text-decoration','none')
         $(e.currentTarget).css('text-decoration','underline')
@@ -133,6 +143,7 @@ $( () => {
         search.run()
     })
 
+    //Enables "infinite" scrolling
     $(document).scroll( () => {
         if (($(document).scrollTop() + $(window).height() === $(document).height())
             && Math.ceil(search.totalResults/50) > search.pageNum){
