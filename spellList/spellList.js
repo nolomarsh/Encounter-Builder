@@ -90,7 +90,9 @@ $( () => {
                     page: search.pageNum,
                     search: search.searchString,
                     level_int: search.levelChoice,
-                    school: search.schoolChoice
+                    school: search.schoolChoice,
+                    document__slug: 'wotc-srd',
+                    ordering: 'duration'
                 }
             }).then( (data) => {
                 for (let spell of data.results) {
