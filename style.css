@@ -23,6 +23,23 @@ h1 {
     font-family: fantasy;
 }
 
+nav {
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    background: #DDBEA8;
+    margin: 10px;
+    padding: 1em;
+    border-radius: 5px;
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .innerContainer {
     display: flex;
     align-items: flex-start;
@@ -132,11 +149,7 @@ tbody {
     text-decoration: underline;
 }
 
-#searchResults tr :first-child {
-    width: 40%;
-}
-
-#searchResults tr :last-child {
+.smallCell {
     text-align: right;
     width: 30px;
 }
@@ -148,6 +161,7 @@ tr * {
 .fas {
     transition: .2s;
     cursor: pointer;
+    width: 30px;
 }
 
 .fas:hover {
@@ -191,7 +205,8 @@ tr * {
     margin-top: 10px;
 }
 
-span {
+span,
+b {
     margin: 0;
     padding: 0;
 }
@@ -263,5 +278,9 @@ span {
 /* --------- Spell List Specific Formatting ---------- */
 
 #spellContainer {
-    width: 80%;
+    width: 90%;
+}
+
+.hidden {
+    display: none;
 }

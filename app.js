@@ -34,7 +34,7 @@ $( () => {
             $cr = $('<td>').text(monster.challenge_rating + ` (${encounter.crToExp(monster.challenge_rating)})`).appendTo($tr)
             $type = $('<td>').text(monster.type).appendTo($tr)
             $alignment = $('<td>').text(monster.alignment).appendTo($tr)
-            $addCell = $('<td>').appendTo($tr)
+            $addCell = $('<td>').appendTo($tr).addClass('smallCell')
             $add = $('<i>').addClass("fas fa-plus").appendTo($addCell)
             $infoIcon.click( () => {
                 populateCard(monster)
@@ -257,17 +257,13 @@ $( () => {
     //Turns lowercase key names with underscores into separate, capitalized words
     const toCapString = string => {
         let splitString = string.split('_')
-        // for (let word of splitString) {
-        //     word = word.slice(0,1).toUpperCase() + word.slice(1)
-        //     console.log(word);
-        // }
         for (let i = 0; i < splitString.length; i++) {
             splitString[i] = splitString[i].slice(0,1).toUpperCase() + splitString[i].slice(1)
         }
         return splitString.join(' ')
     }
 
-    //A very long function that populates the info card with the various deep info 
+    //A very long function that populates the info card with the various deep info
     const populateCard = (monster) => {
         $('#infoCard').show().css('transform','scale(1)')
         $('#cardName').text(monster.name)
